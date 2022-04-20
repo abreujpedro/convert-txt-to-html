@@ -28,7 +28,7 @@ describe('Testing puting content of txt into html', () => {
     expect(getBadResults()).rejects.toEqual(myError);
   });
   test('should create a new html file if does not exist', async () => {
-    const nameHtml = 'new3';
+    const nameHtml = 'nxdxdxdxsssK2'; //random name
     await File.txtToHTML('./mocks/valid.txt', nameHtml);
     const dirList = await readdir(__dirname);
     expect(dirList).toContain(nameHtml + '.html');
