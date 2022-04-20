@@ -29,6 +29,8 @@ class File {
   }
 
   static isValid(text) {
+    const minLettersLength = 2;
+    const minParagraphsLength = 2;
     const validation = { valid: true, error: null };
     function verifyError(verify, error) {
       if (!verify) {
@@ -38,8 +40,9 @@ class File {
       }
     }
     const textWithoutSpace = text.replace(/\s/g, '').replace(/\n/g, '');
-    const isWithCorrectLenght = textWithoutSpace.length >= 2;
-    const isWithCorrectParagraphs = text.split('\n').length >= 2;
+    const isWithCorrectLenght = textWithoutSpace.length >= minLettersLength;
+    const isWithCorrectParagraphs =
+      text.split('\n').length >= minParagraphsLength;
     verifyError(isWithCorrectLenght, errors.FILE_TEXT_LENGTH);
     verifyError(isWithCorrectParagraphs, errors.FILE_PARAGRAPHS_LENGTH);
     return validation;
