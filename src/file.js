@@ -6,7 +6,7 @@ class File {
   static async txtToHTML(
     filePath,
     nameNewHtml,
-    options = { maxLetters: 4, maxParagraphs: 2 },
+    options = { minLetters: 4, minParagraphs: 2 },
   ) {
     const content = await File.getFileContent(filePath);
     const validation = File.isValid(content, options);
@@ -33,8 +33,8 @@ class File {
   }
 
   static isValid(text, options) {
-    const minLettersLength = options.maxLetters;
-    const minParagraphsLength = options.maxParagraphs;
+    const minLettersLength = options.minLetters;
+    const minParagraphsLength = options.minParagraphs;
     const validation = { valid: true, error: null };
     function verifyError(verify, error) {
       if (!verify) {
