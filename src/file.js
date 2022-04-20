@@ -11,16 +11,7 @@ class File {
     const content = await File.getFileContent(filePath);
     const validation = File.isValid(content, options);
     if (validation.valid) {
-      const arrayContent = content
-        .replace(/\r/g, '')
-        .split('\n')
-        .map((paragraph) => `<p>${paragraph}</p>`);
-      const newContent = arrayContent.join('\n');
-      const exampleHtmlPath = join(__dirname, './../template.html');
-      const exampleHtml = (await readFile(exampleHtmlPath)).toString('utf8');
-      const newHtmlContent = exampleHtml.replace('{ext}', newContent);
-      const newHtmlPath = join(__dirname, `../${nameNewHtml}.html`);
-      await writeFile(newHtmlPath, newHtmlContent);
+      await File.putTextIntoHtml(content, nameNewHtml);
     } else {
       throw new Error(validation.error);
     }
@@ -51,6 +42,19 @@ class File {
     verifyError(isWithCorrectParagraphs, errors.FILE_PARAGRAPHS_LENGTH);
     return validation;
   }
+
+  static async putTextIntoHtml(content, nameNewHtml) {
+    const arrayContent = content
+      .replace(/\r/g, '')
+      .split('\n')
+      .map((paragraph) => `<p>${paragraph}</p>`);
+    const newContent = arrayContent.join('\n');
+    const exampleHtmlPath = join(__dirname, './../template.html');
+    const exampleHtml = (await readFile(exampleHtmlPath)).toString('utf8');
+    const newHtmlContent = exampleHtml.replace('{ext}', newContent);
+    const newHtmlPath = join(__dirname, `../${nameNewHtml}.html`);
+    await writeFile(newHtmlPath, newHtmlContent);
+  }
 }
 
 /*You can use File.txtToHtml() to take a txt file content and put in a HTML,
@@ -63,5 +67,9 @@ class File {
 // File.txtToHTML('../mocks/invalid_letters_paragraphs.txt', 'new');
 // File.txtToHTML('./mocks/invalid_letters.txt', 'new');
 // File.txtToHTML('../mocks/invalid_paragraphs.txt', 'new');
+
+//Examples of valid File:
+
+//File.txtToHTML('./mocks/valid.txt', 'new')
 
 module.exports = File;

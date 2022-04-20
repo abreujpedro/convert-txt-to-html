@@ -1,6 +1,7 @@
 const errors = require('./src/errors');
 const File = require('./src/file');
-const { readdir } = require('fs').promises;
+const { join } = require('path');
+const { readdir, unlink } = require('fs').promises;
 
 describe('Testing puting content of txt into html', () => {
   test('should return a error about letters', async () => {
@@ -27,9 +28,11 @@ describe('Testing puting content of txt into html', () => {
     expect(getBadResults()).rejects.toEqual(myError);
   });
   test('should create a new html file if does not exist', async () => {
-    const nameHtml = 'new';
+    const nameHtml = 'new3';
     await File.txtToHTML('./mocks/valid.txt', nameHtml);
     const dirList = await readdir(__dirname);
     expect(dirList).toContain(nameHtml + '.html');
+    const newHtmlPath = join(__dirname, nameHtml + '.html');
+    await unlink(newHtmlPath);
   });
 });
