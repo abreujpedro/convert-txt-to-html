@@ -3,9 +3,13 @@ const { join } = require('path');
 const errors = require('./errors');
 
 class File {
-  static async txtToHTML(filePath, nameNewHtml) {
+  static async txtToHTML(
+    filePath,
+    nameNewHtml,
+    options = { maxLetters: 4, maxParagraphs: 2 },
+  ) {
     const content = await File.getFileContent(filePath);
-    const validation = File.isValid(content);
+    const validation = File.isValid(content, options);
     if (validation.valid) {
       const arrayContent = content
         .replace(/\r/g, '')
@@ -28,15 +32,17 @@ class File {
     return result;
   }
 
-  static isValid(text) {
-    const minLettersLength = 4;
-    const minParagraphsLength = 2;
+  static isValid(text, options) {
+    const minLettersLength = options.maxLetters;
+    const minParagraphsLength = options.maxParagraphs;
     const validation = { valid: true, error: null };
     function verifyError(verify, error) {
       if (!verify) {
         validation.valid = false;
         validation.error =
-          validation.error !== null ? validation.error + ', ' + error : error;
+          validation.error !== null
+            ? validation.error + '\n' + error
+            : '\n' + error;
       }
     }
     const textWithoutSpace = text.replace(/\s/g, '').replace(/\n/g, '');
@@ -49,4 +55,13 @@ class File {
   }
 }
 
-File.txtToHTML('../mocks/invalid_letters_paragraphs.txt', 'new');
+/*You can use File.txtToHtml() to take a txt file content and put in a HTML,
+ the program will search for {ext} and replace the it using the content of TXT file, 
+ you also can change the options, as default you need to have a txt with at least 4 letters and 
+ 2 paragraphs, but you can change it passing as third param to File.txtToHtml() an object 
+ like that: {maxParagraphs: <value>, maxLetters: <value> }*/
+
+//Examples of invalids Files:
+// File.txtToHTML('../mocks/invalid_letters_paragraphs.txt', 'new');
+// File.txtToHTML('../mocks/invalid_letters.txt', 'new');
+// File.txtToHTML('../mocks/invalid_paragraphs.txt', 'new');
