@@ -3,7 +3,7 @@ const { join } = require('path');
 const errors = require('./errors');
 
 class File {
-  static async txtToHTML(filePath) {
+  static async txtToHTML(filePath, nameNewHtml) {
     const content = await File.getFileContent(filePath);
     const validation = File.isValid(content);
     if (validation.valid) {
@@ -15,7 +15,7 @@ class File {
       const exampleHtmlPath = join(__dirname, './../template.html');
       const exampleHtml = (await readFile(exampleHtmlPath)).toString('utf8');
       const newHtmlContent = exampleHtml.replace('{ext}', newContent);
-      const newHtmlPath = join(__dirname, './../new.html');
+      const newHtmlPath = join(__dirname, `./../${nameNewHtml}.html`);
       await writeFile(newHtmlPath, newHtmlContent);
     } else {
       console.error('error:', validation.error);
@@ -29,7 +29,7 @@ class File {
   }
 
   static isValid(text) {
-    const minLettersLength = 2;
+    const minLettersLength = 4;
     const minParagraphsLength = 2;
     const validation = { valid: true, error: null };
     function verifyError(verify, error) {
@@ -49,4 +49,4 @@ class File {
   }
 }
 
-File.txtToHTML('../mocks/test.txt');
+File.txtToHTML('../mocks/invalid_letters_paragraphs.txt', 'new');
