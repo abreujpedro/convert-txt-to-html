@@ -19,15 +19,15 @@ class File {
       const exampleHtmlPath = join(__dirname, './../template.html');
       const exampleHtml = (await readFile(exampleHtmlPath)).toString('utf8');
       const newHtmlContent = exampleHtml.replace('{ext}', newContent);
-      const newHtmlPath = join(__dirname, `./../${nameNewHtml}.html`);
+      const newHtmlPath = join(__dirname, `../${nameNewHtml}.html`);
       await writeFile(newHtmlPath, newHtmlContent);
     } else {
-      console.error('error:', validation.error);
+      throw new Error(validation.error);
     }
   }
 
   static async getFileContent(filePath) {
-    const fileName = join(__dirname, filePath);
+    const fileName = join(__dirname, `../${filePath}`);
     const result = (await readFile(fileName)).toString('utf8');
     return result;
   }
@@ -40,9 +40,7 @@ class File {
       if (!verify) {
         validation.valid = false;
         validation.error =
-          validation.error !== null
-            ? validation.error + '\n' + error
-            : '\n' + error;
+          validation.error !== null ? validation.error + ',' + error : error;
       }
     }
     const textWithoutSpace = text.replace(/\s/g, '').replace(/\n/g, '');
@@ -63,5 +61,7 @@ class File {
 
 //Examples of invalids Files:
 // File.txtToHTML('../mocks/invalid_letters_paragraphs.txt', 'new');
-// File.txtToHTML('../mocks/invalid_letters.txt', 'new');
+// File.txtToHTML('./mocks/invalid_letters.txt', 'new');
 // File.txtToHTML('../mocks/invalid_paragraphs.txt', 'new');
+
+module.exports = File;
