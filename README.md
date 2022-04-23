@@ -62,7 +62,7 @@ Pessoas que contribuíram para este projeto:
   <tr>
     <td align="center">
       <a href="#">
-        <img src="https://avatars.githubusercontent.com/u/78066198?v=4" width="100px;" alt="Foto do Iuri Silva no GitHub"/><br>
+        <img src="https://avatars.githubusercontent.com/u/78066198?v=4" width="100px;" alt="Foto do João Abreu no GitHub"/><br>
         <sub>
           <b>João Abreu</b>
         </sub>
